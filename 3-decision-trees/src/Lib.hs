@@ -205,14 +205,23 @@ getAllFeatureSplits set = getFeatureSplits 0 set ++ getFeatureSplits 1 set
 -- Voorbeelden: gegeven CSplit 1 3.0 en CRecord [4.0, 2.0, 9.0] "x", is het resultaat True.
 --              gegeven CSplit 1 1.0 en CRecord [4.0, 2.0, 9.0] "x", is het resultaat False.
 -- TODO: schrijf en becommentarieer de functie splitSingleRecord, die voor een enkel CRecord True of False teruggeeft.
+{-|
+checks if the value of CSplit is greater than the feature variable in the CRecord
+-} 
 splitSingleRecord :: CSplit -> CRecord -> Bool
-splitSingleRecord = undefined
+splitSingleRecord (CSplit feat val) (CRecord prop lab) = val > (prop !! feat) 
 
 -- Nu kunnen we de functie schrijven die één dataset opsplitst in twee, op basis van een CSplit object.
 -- TODO: schrijf en becommentarieer de functie splitOnFeature, die één dataset opsplitst in twee.
 -- HINT: gebruik een functie uit de Prelude. Onthoud dat CDataset = [CRecord]!
+{-|
+splits een hele CData-set in tweeën op de Feature die is doorgegeven in de CSplit
+met de filterfunctie controleert de code eerst splitSingleRecord-functies retourneren True en plaatst het aan de linkerkant van de tuple
+dan controleert de code met filter welke splitSingleRecord een False retourneert en stopt deze aan de rechterkant van de tuple en retourneert de tuple
+-}
+
 splitOnFeature :: CDataset -> CSplit -> (CDataset, CDataset)
-splitOnFeature = undefined
+splitOnFeature xs cs = (filter (\x -> splitSingleRecord cs x) xs, filter (\x -> not (splitSingleRecord cs x)) xs)
 
 -- Nu kunnen we:
 --     1) alle splitsingen genereren voor een CDataset, met behulp van Sectie 2;
